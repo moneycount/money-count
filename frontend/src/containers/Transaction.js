@@ -1,143 +1,120 @@
-import React, { useEffect, useState } from 'react';
-import { Page, Section } from 'react-page-layout';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from "../reducks/users/selectors";
+import React, { useEffect, useState } from "react";
+import { Page, Section } from "react-page-layout";
+import { useDispatch, useSelector } from "react-redux";
 
-import TransactionIcon from '../assets/images/transaction.svg';
-import AddTransactionBtn from '../components/default/AddTransactionBtn';
-import Empty from '../components/default/Empty';
-import Pagination from '../components/default/Pagination';
-import SecondNavBar from '../components/default/SecondNavBar';
-import ManageTransactionModal from '../components/transactions/ManageTransactionModal';
-import TransactionList from '../components/transactions/TransactionList';
-import { fetchCategories } from '../reducks/category/operations';
-import { getCategories } from '../reducks/category/selectors';
-import { resetErrorTransactionAction } from '../reducks/transactions/actions';
+import TransactionIcon from "../assets/images/transaction.svg";
+import AddTransactionBtn from "../components/default/AddTransactionBtn";
+import Empty from "../components/default/Empty";
+import Pagination from "../components/default/Pagination";
+import SecondNavBar from "../components/default/SecondNavBar";
+import ManageTransactionModal from "../components/transactions/ManageTransactionModal";
+import TransactionList from "../components/transactions/TransactionList";
+import { fetchCategories } from "../reducks/category/operations";
+import { getCategories } from "../reducks/category/selectors";
+import { resetErrorTransactionAction } from "../reducks/transactions/actions";
 import {
-    addTransaction,
-    deleteTransaction,
-    fetchReportTransactions,
-    fetchTransactions,
-    updateTransaction,
-} from '../reducks/transactions/operations';
-import { getTransactions } from '../reducks/transactions/selectors';
-import { Link } from 'react-router-dom';
-import defaultProfile from '../assets/images/profile.svg'
-import menuIcon from "../assets/images/menu-icon.svg"
-import ProfileHeader from '../components/default/ProfileHeader';
+  addTransaction,
+  deleteTransaction,
+  fetchReportTransactions,
+  fetchTransactions,
+  updateTransaction,
+} from "../reducks/transactions/operations";
+import { getTransactions } from "../reducks/transactions/selectors";
 
 export default function Transaction() {
-	const dispatch = useDispatch();
-	const selector = useSelector((state) => state);
-	const user = getUser(selector);
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state);
+  const transactions = getTransactions(selector);
+  const categories = getCategories(selector);
+  const page = 1;
 
-	const transactions = getTransactions(selector);
-	const categories = getCategories(selector);
-	const page = 1;
-	const token = user ? user.token : null;
-	
-	const [openModalMenu, setOpenModalMenu] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [openModalConfirmation, setOpenModalConfirmation] = useState(false);
 
+  const initialValues = {
+    id: null,
+    type: "",
+    date: new Date().toLocaleDateString("en-CA"),
+    name: "",
+    category: "",
+    amount: 0,
+  };
+  const [values, setValues] = useState(initialValues);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
 
-	const [openModal, setOpenModal] = useState(false);
-	const [isUpdate, setIsUpdate] = useState(false);
-	const [openModalConfirmation, setOpenModalConfirmation] = useState(false);
+    setValues({
+      ...values,
+      [name]: value,
+    });
+  };
 
-	const initialValues = { id: null, type: "", date: new Date().toLocaleDateString("en-CA"), name: "", category: "", amount: 0 };
-	const [values, setValues] = useState(initialValues);
+  useEffect(() => {
+    dispatch(fetchTransactions({ page }));
+    dispatch(fetchCategories());
+    // eslint-disable-next-line
+  }, []);
 
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
+  const addReportHandler = async () => {
+    await dispatch(addTransaction(values));
+    await dispatch(fetchTransactions({ page }));
+    setValues({
+      type: "",
+      name: "",
+      category: "",
+      date: new Date().toLocaleDateString("en-CA"),
+      amount: 0,
+    });
+    setOpenModal(true);
+  };
 
-		setValues({
-			...values,
-			[name]: value,
-		});
-	};
+  const openAddReportModalHandler = () => {
+    setValues({
+      type: "",
+      name: "",
+      category: "",
+      date: new Date().toLocaleDateString("en-CA"),
+      amount: 0,
+    });
+    dispatch(resetErrorTransactionAction());
+    setOpenModal(true);
+    setIsUpdate(false);
+  };
 
-	useEffect(() => {
-		dispatch(fetchTransactions({ page }));
-		dispatch(fetchCategories());
-		// eslint-disable-next-line
-	}, []);
+  const closeAddReportModalHandler = () => {
+    dispatch(resetErrorTransactionAction());
+    setOpenModal(false);
+  };
 
-	const addReportHandler = async () => {
-		await dispatch(addTransaction(values));
-		await dispatch(fetchTransactions({ page }));
-		setValues({ type: "", name: "", category: "", date: new Date().toLocaleDateString("en-CA"), amount: 0 });
-		setOpenModal(true);
-	};
+  const detailReportHandle = (data) => {
+    setIsUpdate(true);
+    setOpenModal(true);
+    setValues({ ...data, category: data.category.id });
+  };
 
-	const openAddReportModalHandler = () => {
-		setValues({ type: "", name: "", category: "", date: new Date().toLocaleDateString("en-CA"), amount: 0 });
-		dispatch(resetErrorTransactionAction());
-		setOpenModal(true);
-		setIsUpdate(false);
-	};
+  const deleteReportHandler = async () => {
+    await dispatch(deleteTransaction(values.id));
+    await dispatch(fetchTransactions({ page }));
+    await dispatch(fetchReportTransactions());
+    setIsUpdate(false);
+    setOpenModal(false);
+    setOpenModalConfirmation(false);
+  };
 
-	const closeAddReportModalHandler = () => {
-		dispatch(resetErrorTransactionAction());
-		setOpenModal(false);
-	};
+  const updateReportHandler = async () => {
+    await dispatch(updateTransaction(values, values.id));
+    await dispatch(fetchTransactions({ page }));
+    setIsUpdate(false);
+    setOpenModal(false);
+  };
 
-	const detailReportHandle = (data) => {
-		setIsUpdate(true);
-		setOpenModal(true);
-		setValues({ ...data, category: data.category.id });
-	};
-
-	const deleteReportHandler = async () => {
-		await dispatch(deleteTransaction(values.id));
-		await dispatch(fetchTransactions({ page }));
-		await dispatch(fetchReportTransactions());
-		setIsUpdate(false);
-		setOpenModal(false);
-		setOpenModalConfirmation(false);
-	};
-
-	const updateReportHandler = async () => {
-		await dispatch(updateTransaction(values, values.id));
-		await dispatch(fetchTransactions({ page }));
-		setIsUpdate(false);
-		setOpenModal(false);
-	};
-
-	return (
+  return (
     <Page layout="default">
       <Section slot="breadcrumbs">
-        <div>
-          {token ? (
-            <button
-              onClick={() => setOpenModalMenu(true)}
-              className="sign-out-btn"
-			  id="sign-out-btn-id2"
-            >
-              <img
-                src={user.profile ?? defaultProfile}
-                alt="profile-img"
-                width={36}
-                height={36}
-              />
-              <div className="profile-nav">
-                {user.name}
-                <br />
-                {user.email}
-              </div>
-
-              <img src={menuIcon} />
-            </button>
-          ) : (
-            <Link to="/sign-in">Sign in</Link>
-          )}
-          <ProfileHeader
-            user={user}
-            openModalMenu={openModalMenu}
-            setOpenModalMenu={setOpenModalMenu}
-          />
-        </div>
         <SecondNavBar
-          title="Transaction List"
+          title="Transaction"
           right={
             <AddTransactionBtn
               openAddReportModalHandler={openAddReportModalHandler}
@@ -145,7 +122,6 @@ export default function Transaction() {
           }
         />
       </Section>
-
       <Section slot="main">
         <ManageTransactionModal
           actions={{
@@ -170,7 +146,7 @@ export default function Transaction() {
             {transactions.results && transactions.results.length > 0 ? (
               <table>
                 <thead>
-                  <tr>
+                  <tr id="bold">
                     <th>Date</th>
                     <th>Category</th>
                     <th>Name</th>

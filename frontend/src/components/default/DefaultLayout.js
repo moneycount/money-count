@@ -2,56 +2,64 @@ import React from "react";
 import { Slot } from "react-page-layout";
 import { useHistory } from "react-router";
 import Header from "./Header";
-import dashboard from "../../assets/images/dashboard.svg";
-import transactionList from "../../assets/images/transaction-list.svg";
+import dashboard from "../../assets/images/dashboard1.png";
 import list from "../../assets/images/list_alt.png";
-import profile from "../../assets/images/my-profile.svg";
-import dashboardOn from "../../assets/images/dashboard-on.png";
-import transactionlistOn from "../../assets/images/transaction-list-on.png";
-import profileOn from "../../assets/images/profile-on.png";
-import logo from "../../assets/images/logo.svg";
+import profile from "../../assets/images/account_circle.png";
+import dashboardActive from "../../assets/images/dashboard1.png";
+import listActive from "../../assets/images/transactionlist.png";
+import profileActive from "../../assets/images/account_circle_white.png";
 import { Link } from "react-router-dom";
 
 export default function DefaultLayout() {
-	const history = useHistory();
-	const { pathname } = history.location;
-	return (
+  const history = useHistory();
+  const { pathname } = history.location;
+  return (
     <div className="main-wrapper">
+      <Header />
       <div className="content-wrapper">
-        <main>
-          <aside>
-            <div class="logo">
-              <Link to="/">
-                <img src={logo} alt="logo" />
-              </Link>
-              <Link to="/">
-                <img src={pathname === "/" ? dashboardOn : dashboard} alt="" />
-              </Link>
-              <Link to="/transaction">
+        <aside className="sidebar">
+          <ul>
+            <Link to="/">
+              <li className={pathname === "/" ? "active-sidebar" : ""}>
                 <img
-                  src={
-                    pathname === "/transaction"
-                      ? transactionlistOn
-                      : transactionList
-                  }
-                  alt=""
+                  width="40"
+                  height="40"
+                  src={pathname === "/" ? dashboardActive : dashboard}
+                  alt="dashboard-icon"
                 />
-              </Link>
-              <Link to="/profile">
+                <span>Dashboard</span>
+              </li>
+            </Link>
+            <Link to="/transaction">
+              <li
+                className={pathname === "/transaction" ? "active-sidebar" : ""}
+              >
                 <img
-                  src={pathname === "/profile" ? profileOn : profile}
-                  alt=""
+                  width="40"
+                  height="40"
+                  src={pathname === "/transaction" ? listActive : list}
+                  alt="list-icon"
                 />
-              </Link>
-            </div>
-          </aside>
-          <div className="container">
-            <div className="content">
-              <Slot name="breadcrumbs" className="second-nav-bar" />
-              <Slot name="main" component="section" />
-            </div>
-          </div>
-        </main>
+                <span>Transaction List</span>
+              </li>
+            </Link>
+            <Link to="/profile">
+              <li className={pathname === "/profile" ? "active-sidebar" : ""}>
+                <img
+                  width="40"
+                  height="40"
+                  src={pathname === "/profile" ? profileActive : profile}
+                  alt="profile-icon"
+                />
+                <span>My Profile</span>
+              </li>
+            </Link>
+          </ul>
+        </aside>
+        <div className="content">
+          <Slot name="breadcrumbs" className="second-nav-bar" />
+          <Slot name="main" component="section" />
+        </div>
       </div>
     </div>
   );

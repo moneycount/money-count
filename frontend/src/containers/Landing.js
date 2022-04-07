@@ -1,63 +1,36 @@
 import React from "react";
-import barGraph from "../assets/images/bar-graph.svg";
-import waveGraph from "../assets/images/wave-graph.svg";
-import pieGraph from "../assets/images/pie-graph.svg";
-import logo from "../assets/images/logo.svg";
+import { Page, Section } from "react-page-layout";
+import SignupForm from "../components/landing-page/SignupForm";
+import exampleImage from "../assets/images/summary.png";
+import exampleImageMobile from "../assets/images/landing-pic-mobile.png";
 import { Link } from "react-router-dom";
+import graph from "../assets/images/income.png";
 
-const Landing = () => {
+export default function Landing() {
   return (
-    <div>
-      {" "}
-      <main>
-        <aside>
-          <div class="logo">
-            <Link to="/">
-              <img src={logo} alt="logo" />
-            </Link>
-          </div>
-        </aside>
-        <div class="container">
-          <div class="nav">
-            <div class="sign-in">
-              <Link to="/sign-in">
-                <a href="#">Sign In</a>
-              </Link>
-            </div>
-            <div class="sign-up">
-              <Link to="/sign-up">
-                <a href="#">Sign Up</a>
-              </Link>
-            </div>
-          </div>
-          <div class="welcome">
-            <div class="welcome-text">
-              <h1>Welcome</h1>
-              <h3>
-                Sign up and Manage <br />
-                Your Budget
-              </h3>
-              <p>
-                Note down your expenditure and income, <br />
-                then check your balance everyday
-              </p>
-              <div class="bar-graph">
-                <img src={barGraph} alt="bar-grpah" />
-              </div>
-            </div>
-            <div class="profile-summary">
-              <div class="wave-image">
-                <img src={waveGraph} alt="wave-graph" />
-              </div>
-              <div class="pie-image">
-                <img src={pieGraph} alt="pie-graph" />
-              </div>
-            </div>
-          </div>
+    <Page layout="public">
+      <Section slot="main">
+        <div className="landing-page">
+          <h1 id="welcome">Welcome</h1>
+          <span className="big-text mb-2">Sign up and manage your balance</span>
+          <span className="small-text mb-3">
+            Note down your expenditure and income, <br /> then check your
+            balance everyday
+          </span>
+          <img id="graphdemo" src={graph} />
+          <Link className="sign-up-mobile" to="/sign-up">
+            <button className="mt-2 custom-btn mobile" type="button">
+              Register
+            </button>
+          </Link>
+          <img className="example-image" src={exampleImage} alt="example-pic" />
+          {/* <img
+            className="example-image-mobile"
+            src={exampleImageMobile}
+            alt="example-mobile-pic"
+          /> */}
         </div>
-      </main>
-    </div>
+      </Section>
+    </Page>
   );
-};
-
-export default Landing;
+}

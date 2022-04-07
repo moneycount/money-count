@@ -1,78 +1,65 @@
-
-main .container .box{
-    /* width: 30%; */
-    /* height: 60%; */
-    background-color: white;
-    position: absolute;
-    top: 15%;
-    left: 37%;
-    border-radius: 20px;
-    padding: 5%;
+.sign-in {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  padding-top: 3rem;
 }
-
-
-main .container .box form{
-    padding: 20px 0 20px 0;
+.sign-in .title {
+  font-size: 2.5rem;
+  max-width: 400px;
+  text-align: center;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 1px;
 }
-
-main .container .box form label{
-    font-weight: bold;
+.sign-in .description {
+  font-size: 1rem;
+  max-width: 375px;
+  text-align: center;
+  margin: 1rem 0 1.5rem 0;
+  line-height: 1.6;
+  letter-spacing: 1.5px;
 }
-
-main .container .box form input{
-    margin: 15px 0 15px 0;
-    width: 100%;
-    /* font-size: 28px; */
-    height: 50px;
-    border-radius: 10px;
-    border: 0;
-    background-color: #F5F5F5;
+.sign-in .form-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  max-width: 400px;
+  padding: 30px 60px;
+  margin-bottom: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 14px #00000099;
 }
-
-#login{
-    background-color: #2E4DD4;
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
-    padding: 15px 0 15px 0;
+@media screen and (max-width: 500px) {
+  .sign-in .title {
+    font-size: 2rem;
+    max-width: 350px;
+    line-height: 1.2;
+  }
+  .sign-in .description {
+    font-size: 1rem;
+    margin: 1rem 0 2.5rem 0;
+  }
+  .sign-in .form-container {
+    max-width: 350px;
+    padding: 20px 50px;
+  }
 }
-
-main .container .box form .reset{
-    display: flex;
-    justify-content: space-between;
+@media screen and (max-width: 380px) {
+  .sign-in .title {
+    font-size: 1.5rem;
+    max-width: 250px;
+    line-height: 1.2;
+  }
+  .sign-in .description {
+    font-size: 1rem;
+    margin: 1rem 0 2rem 0;
+  }
+  .sign-in .form-container {
+    max-width: 310px;
+    padding: 20px 40px;
+  }
 }
-
-main .container .box form .create-button{
-    text-decoration: none;
-    background-color: #2E4DD4;
-    font-size: 15px;
-    font-weight: bold;
-    padding: 15px 0 15px 0;
-    text-align: center;
-    border-radius: 10px;
-}
-
-main .container .box form .create-button a{
-    color: white;
-    text-decoration: none;
-    
-}
-#btn-login{
-    background-color: #2E4DD4;
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
-    padding: 15px 100px 15px 120px;
-    border: 0;
-    border-radius: 10px;
-}
-
-@media screen and (max-width:450px) {
-
-    main .container .box{
-        width: 80%;
-        left: 10%;
-        top: 28%;
-    }
-}
-
