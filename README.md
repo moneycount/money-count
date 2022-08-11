@@ -1,8 +1,7 @@
-# Forum App in React & Redux + Django
+# Money Counter
 
 ```
-Forum App, with a frontend built in React & Redux and a backend built in Django API.
-```
+This project is an online ledger to help you track your expenditure and income accurately and effectively monitor your spending. It is created in a user-friendly manner are diagrammatic and graphical representations to enhance your understanding, save you time from the tedious process of bookkeeping, giving you the ability to sync and manage your entire bookkeeping in a single app.```
 
 ## Live Demo
 
