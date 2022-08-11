@@ -8,7 +8,7 @@ This project is an online ledger to help you track your expenditure and income a
 
 **This App uses a Heroku free plan, so I am afraid that it takes time to load the pages.**
 
-Check out [FRONTEND LIVE DEMO](https://money-counter-frontend.herokuapp.com/) here!!
+Check out [FRONTEND LIVE DEMO](https://money-count-frontend.herokuapp.com/) here!!
 
 Check out [API LIVE DEMO](https://forum-prod-api.herokuapp.com/) here!!
 
